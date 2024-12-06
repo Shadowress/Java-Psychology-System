@@ -27,7 +27,7 @@ public class FileLoader {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             reader.readLine();
-
+            
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
 

@@ -1,12 +1,15 @@
 package userinterface;
 
+import entities.UserType;
+import javax.swing.JOptionPane;
+import services.UserManager;
+
 public class RegisterUI extends javax.swing.JFrame {
 
     public RegisterUI() {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -34,12 +37,6 @@ public class RegisterUI extends javax.swing.JFrame {
         password_text.setForeground(new java.awt.Color(102, 102, 102));
         password_text.setText("Password:");
 
-        username_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                username_enterActionPerformed(evt);
-            }
-        });
-
         signup_button.setText("Sign up");
         signup_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,18 +51,7 @@ public class RegisterUI extends javax.swing.JFrame {
             }
         });
 
-        password_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                password_enterActionPerformed(evt);
-            }
-        });
-
         combo_box_rule.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Lecturer" }));
-        combo_box_rule.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_box_ruleActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,34 +113,40 @@ public class RegisterUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void username_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_enterActionPerformed
-        // Enter username
-    }//GEN-LAST:event_username_enterActionPerformed
-
-    private void password_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_enterActionPerformed
-        // Enter password
-    }//GEN-LAST:event_password_enterActionPerformed
-
     private void signup_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signup_buttonActionPerformed
-        // Signup
-    }//GEN-LAST:event_signup_buttonActionPerformed
+        String username = username_enter.getText().trim();
+        String password = password_enter.getText().trim();
+        String selectedValue = (String) combo_box_rule.getSelectedItem();
 
-    private void combo_box_ruleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_box_ruleActionPerformed
-        // Choose between student or lecturer
-    }//GEN-LAST:event_combo_box_ruleActionPerformed
+        if (username == null || username.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a username", "Login Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a password", "Login Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if ("Student".equals(selectedValue)) {
+            UserManager.registerUser(username, password, UserType.STUDENT);
+        } else if ("Lecturer".equals(selectedValue)) {
+            UserManager.registerUser(username, password, UserType.LECTURER);
+        }
+
+        LoginUI loginUI = new LoginUI();
+        loginUI.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_signup_buttonActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
         LoginUI loginUI = new LoginUI();
-    
         loginUI.setVisible(true);
-    
         this.dispose();
     }//GEN-LAST:event_back_buttonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -165,6 +157,7 @@ public class RegisterUI extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RegisterUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
 
         java.awt.EventQueue.invokeLater(() -> {
             new RegisterUI().setVisible(true);

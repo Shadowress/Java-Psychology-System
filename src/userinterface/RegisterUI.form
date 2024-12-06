@@ -129,9 +129,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="username_enter">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="username_enterActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="signup_button">
       <Properties>
@@ -150,9 +147,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="password_enter">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="password_enterActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="combo_box_rule">
       <Properties>
@@ -163,9 +157,6 @@
           </StringArray>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combo_box_ruleActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

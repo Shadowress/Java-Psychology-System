@@ -62,37 +62,35 @@ public class StudentDashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(back_button)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(back_button)
                         .addGap(41, 41, 41)
-                        .addComponent(jLabel1)
-                        .addContainerGap(61, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(pastappt_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bookconsultation_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(upcomingappt_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(105, 105, 105))))
+                            .addComponent(upcomingappt_button))
+                        .addGap(44, 44, 44)))
+                .addGap(60, 60, 60))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(back_button)))
+                .addContainerGap()
+                .addComponent(back_button)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
                 .addGap(33, 33, 33)
                 .addComponent(bookconsultation_button)
                 .addGap(18, 18, 18)
                 .addComponent(upcomingappt_button)
                 .addGap(18, 18, 18)
                 .addComponent(pastappt_button)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pack();
@@ -101,33 +99,25 @@ public class StudentDashboard extends javax.swing.JFrame {
 
     private void bookconsultation_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookconsultation_buttonActionPerformed
         StudentBookConsultation studentBookConsultation = new StudentBookConsultation();
-
         studentBookConsultation.setVisible(true);
-
         this.dispose();
     }//GEN-LAST:event_bookconsultation_buttonActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
         LoginUI loginUI = new LoginUI();
-
         loginUI.setVisible(true);
-
         this.dispose();
     }//GEN-LAST:event_back_buttonActionPerformed
 
     private void pastappt_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastappt_buttonActionPerformed
         StudentPastAppointment studentPastAppointment = new StudentPastAppointment();
-
         studentPastAppointment.setVisible(true);
-
         this.dispose();
     }//GEN-LAST:event_pastappt_buttonActionPerformed
 
     private void upcomingappt_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomingappt_buttonActionPerformed
         StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment();
-
         studentUpcomingAppointment.setVisible(true);
-
         this.dispose();
     }//GEN-LAST:event_upcomingappt_buttonActionPerformed
 

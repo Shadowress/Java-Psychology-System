@@ -33,9 +33,9 @@ public class FileManager {
             @SuppressWarnings("SleepWhileInLoop")
             protected Void doInBackground() throws Exception {
                 for (StartupFileResource fileResource : StartupFileResource.values()) {
-                    publish("Initializing " + fileResource.getFilePath());
+                    publish("Initializing " + fileResource.toString().toLowerCase());
                     initializeFile(fileResource.getFilePath(), fileResource.getFileHeader());
-                    fileResource.getLoader();
+                    fileResource.getLoader().run();
 
                     try {
                         Thread.sleep(500);
@@ -69,7 +69,7 @@ public class FileManager {
         File file = new File(filePath);
 
         try {
-            // Add chacking for the file location
+            // Add checking for the file location
             if (file.createNewFile()) {
                 try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
                     writer.println(fileHeader);

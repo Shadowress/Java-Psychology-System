@@ -1,5 +1,8 @@
 package userinterface;
 
+import javax.swing.JOptionPane;
+import services.UserManager;
+
 public class LoginUI extends javax.swing.JFrame {
 
     public LoginUI() {
@@ -25,12 +28,6 @@ public class LoginUI extends javax.swing.JFrame {
         top_text.setText("APU Psychology Consultation ");
         top_text.setIconTextGap(5);
 
-        username_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                username_enterActionPerformed(evt);
-            }
-        });
-
         Nothing.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
         Nothing.setForeground(new java.awt.Color(102, 102, 102));
         Nothing.setText("Dont have an account ?");
@@ -47,12 +44,6 @@ public class LoginUI extends javax.swing.JFrame {
         password_text.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         password_text.setForeground(new java.awt.Color(102, 102, 102));
         password_text.setText("Password:");
-
-        password_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                password_enterActionPerformed(evt);
-            }
-        });
 
         register_button.setFont(new java.awt.Font("Segoe UI Semibold", 0, 10)); // NOI18N
         register_button.setForeground(new java.awt.Color(102, 102, 102));
@@ -123,31 +114,31 @@ public class LoginUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void username_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_enterActionPerformed
-        // Enter username
-    }//GEN-LAST:event_username_enterActionPerformed
-
-    private void password_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_enterActionPerformed
-        // Enter pass
-    }//GEN-LAST:event_password_enterActionPerformed
-
     private void register_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_buttonActionPerformed
         RegisterUI registerUI = new RegisterUI();
-
         registerUI.setVisible(true);
-
         this.dispose();
     }//GEN-LAST:event_register_buttonActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
-        //Login to student or lecturer dashboard
+        String username = username_enter.getText().trim();
+        String password = password_enter.getText().trim();
+
+        if (username == null || username.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a username", "Login Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a password", "Login Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        UserManager.login(this, username, password);
     }//GEN-LAST:event_login_buttonActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -155,13 +146,7 @@ public class LoginUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LoginUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
