@@ -11,9 +11,9 @@ public class StudentDashboard extends javax.swing.JFrame {
 
         bookconsultation_button = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        back_button = new javax.swing.JButton();
         pastappt_button = new javax.swing.JButton();
         upcomingappt_button = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -30,13 +30,6 @@ public class StudentDashboard extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(51, 153, 255));
         jLabel1.setText("APU Psychology Consultation ");
         jLabel1.setIconTextGap(5);
-
-        back_button.setText("<");
-        back_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                back_buttonActionPerformed(evt);
-            }
-        });
 
         pastappt_button.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         pastappt_button.setForeground(new java.awt.Color(102, 102, 102));
@@ -56,20 +49,26 @@ public class StudentDashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Log Out");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(back_button)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(pastappt_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bookconsultation_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -81,7 +80,7 @@ public class StudentDashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(back_button)
+                .addComponent(jButton1)
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
                 .addGap(33, 33, 33)
@@ -103,12 +102,6 @@ public class StudentDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_bookconsultation_buttonActionPerformed
 
-    private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
-        LoginUI loginUI = new LoginUI();
-        loginUI.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_back_buttonActionPerformed
-
     private void pastappt_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pastappt_buttonActionPerformed
         StudentPastAppointment studentPastAppointment = new StudentPastAppointment();
         studentPastAppointment.setVisible(true);
@@ -120,6 +113,12 @@ public class StudentDashboard extends javax.swing.JFrame {
         studentUpcomingAppointment.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_upcomingappt_buttonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        LoginUI loginUI = new LoginUI();
+        loginUI.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -141,8 +140,8 @@ public class StudentDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton back_button;
     private javax.swing.JButton bookconsultation_button;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton pastappt_button;
     private javax.swing.JButton upcomingappt_button;

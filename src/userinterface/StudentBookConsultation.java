@@ -1,24 +1,142 @@
 package userinterface;
 
+import datastorage.FileManager;
+import entities.Slot;
+import entities.UserType;
+import entities.Users;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import services.AppointmentManager;
+import services.SessionManager;
+import services.SlotManager;
+
 public class StudentBookConsultation extends javax.swing.JFrame {
+
+    private DefaultListModel<String> listModel;
+    private DefaultTableModel tableModel;
+    private static int lecturerID;
 
     public StudentBookConsultation() {
         initComponents();
+        initializeLecturerList();
+        initializeSlotTable();
+    }
+
+    private void initializeLecturerList() {
+        listModel = new DefaultListModel<>();
+        lecturerList.setModel(listModel);
+
+        for (Users user : FileManager.getUsers().values()) {
+            if (user.getUserType() == UserType.LECTURER) {
+                listModel.addElement(user.getUsername());
+            }
+        }
+    }
+
+    private void initializeSlotTable() {
+        String[] columns = {"Date", "Time"};
+
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        slotTable.setModel(tableModel);
+    }
+
+    private void addSlotsToTable(int lecturerID) {
+        tableModel.setRowCount(0);
+
+        for (String[] slot : SlotManager.getAvailableLecturerSlots(lecturerID)) {
+            tableModel.addRow(new Object[]{slot[0], slot[1]});
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSpinner1 = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextField1 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
         top_text = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        display_consultation = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        slotid_enter = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        studentname_enter = new javax.swing.JTextField();
         confirm_button = new javax.swing.JButton();
         back_button = new javax.swing.JButton();
-        lecname_combo_box = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lecturerList = new javax.swing.JList<>();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        slotTable = new javax.swing.JTable();
+
+        jTextField1.setText("jTextField1");
+
+        jScrollPane2.setViewportView(jList1);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable1);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable2);
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(jTable3);
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane10.setViewportView(jTable4);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -26,46 +144,7 @@ public class StudentBookConsultation extends javax.swing.JFrame {
         top_text.setForeground(new java.awt.Color(51, 153, 255));
         top_text.setText("Book Consultation");
 
-        display_consultation.setForeground(new java.awt.Color(51, 153, 255));
-        display_consultation.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Slot ID", "Date", "Time"
-            }
-        ));
-        display_consultation.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                display_consultationComponentShown(evt);
-            }
-        });
-        jScrollPane3.setViewportView(display_consultation);
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 153, 255));
-        jLabel2.setText("Enter Slot ID:");
-
-        slotid_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                slotid_enterActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 153, 255));
-        jLabel3.setText("Enter Student Name:");
-
-        studentname_enter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentname_enterActionPerformed(evt);
-            }
-        });
-
-        confirm_button.setText("Confirm");
+        confirm_button.setText("Book Consultation");
         confirm_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirm_buttonActionPerformed(evt);
@@ -79,12 +158,58 @@ public class StudentBookConsultation extends javax.swing.JFrame {
             }
         });
 
-        lecname_combo_box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dr. Smith", "Dr. Brown" }));
-        lecname_combo_box.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                lecname_combo_boxComponentShown(evt);
+        lecturerList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lecturerListValueChanged(evt);
             }
         });
+        jScrollPane4.setViewportView(lecturerList);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        slotTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Time"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(slotTable);
+        if (slotTable.getColumnModel().getColumnCount() > 0) {
+            slotTable.getColumnModel().getColumn(0).setResizable(false);
+            slotTable.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,51 +218,37 @@ public class StudentBookConsultation extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(back_button)
-                        .addGap(167, 167, 167)
-                        .addComponent(top_text))
+                        .addGap(31, 31, 31)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(lecname_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(confirm_button)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(studentname_enter))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(slotid_enter, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(confirm_button)))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                                .addComponent(back_button)
+                                .addGap(156, 156, 156)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(top_text)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(top_text, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back_button))
-                .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(back_button)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(top_text, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lecname_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(slotid_enter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirm_button))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(studentname_enter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(confirm_button)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,29 +261,45 @@ public class StudentBookConsultation extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_back_buttonActionPerformed
 
-    private void display_consultationComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_display_consultationComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_display_consultationComponentShown
-
-    private void slotid_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slotid_enterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_slotid_enterActionPerformed
-
-    private void studentname_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentname_enterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_studentname_enterActionPerformed
-
     private void confirm_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirm_buttonActionPerformed
-        // TODO Add code to book consultation
+        int selectedRow = slotTable.getSelectedRow();
 
-        StudentDashboard studentDashboard = new StudentDashboard();
-        studentDashboard.setVisible(true);
-        this.dispose();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "No slot is selected!", "Selection Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            String date = (String) tableModel.getValueAt(selectedRow, 0);
+            String time = (String) tableModel.getValueAt(selectedRow, 1);
+
+            int studentID = SessionManager.getCurrentUser().getUserID();
+            int slotID = 0;
+
+            for (Slot slot : FileManager.getSlots().values()) {
+                if (slot.getLecturerID() == lecturerID && slot.getDate().toString().equals(date) && slot.getTime().toString().equals(time)) {
+                    slotID = slot.getSlotID();
+                    break;
+                }
+            }
+
+            AppointmentManager.makeAppointment(this, studentID, slotID);
+        }
     }//GEN-LAST:event_confirm_buttonActionPerformed
 
-    private void lecname_combo_boxComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_lecname_combo_boxComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lecname_combo_boxComponentShown
+    private void lecturerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lecturerListValueChanged
+        if (!evt.getValueIsAdjusting()) {
+            String selectedLecturerName = lecturerList.getSelectedValue();
+
+            if (selectedLecturerName != null) {
+                for (Users user : FileManager.getUsers().values()) {
+                    if (user.getUsername().equals(selectedLecturerName)) {
+                        lecturerID = user.getUserID();
+                        break;
+                    }
+                }
+
+                addSlotsToTable(lecturerID);
+            }
+        }
+    }//GEN-LAST:event_lecturerListValueChanged
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -196,13 +323,27 @@ public class StudentBookConsultation extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JButton confirm_button;
-    private javax.swing.JTable display_consultation;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JComboBox<String> lecname_combo_box;
-    private javax.swing.JTextField slotid_enter;
-    private javax.swing.JTextField studentname_enter;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JList<String> lecturerList;
+    private javax.swing.JTable slotTable;
     private javax.swing.JLabel top_text;
     // End of variables declaration//GEN-END:variables
 }

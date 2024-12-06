@@ -19,6 +19,7 @@ public class UserManager {
         }
 
         FileManager.addNewUser(username, password, userType);
+        JOptionPane.showMessageDialog(null, "Your account has been successfully registered", "Register User Successful", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void login(LoginUI UI, String username, String password) {
@@ -32,7 +33,7 @@ public class UserManager {
                     } else if (user.getUserType() == UserType.LECTURER) {
                         new LecturerDashboard().setVisible(true);
                     }
-                    
+
                     UI.dispose();
                     return;
 

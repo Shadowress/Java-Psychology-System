@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import userinterface.StudentBookConsultation;
+import userinterface.StudentDashboard;
 
 public class AppointmentManager {
 
-    public static void makeAppointment(int studentID, int slotID) {
+    public static void makeAppointment(StudentBookConsultation UI, int studentID, int slotID) {
         for (Appointment appointment : FileManager.getAppointments().values()) {
             if (appointment.getStudentID() == studentID && appointment.getStatus() == AppointmentStatus.SCHEDULED) {
                 JOptionPane.showMessageDialog(null, "You cannot have multiple appointments booked at the same time", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -23,6 +25,11 @@ public class AppointmentManager {
         }
 
         FileManager.addNewAppointment(studentID, slotID);
+        JOptionPane.showMessageDialog(null, "Your appointment has been successfully booked!", "Appointment Bookiing Successful", JOptionPane.INFORMATION_MESSAGE);
+
+        StudentDashboard studentDashboard = new StudentDashboard();
+        studentDashboard.setVisible(true);
+        UI.dispose();
     }
 
     public static List<String[]> getUserAppointments(int userID) {

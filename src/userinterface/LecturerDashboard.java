@@ -12,8 +12,8 @@ public class LecturerDashboard extends javax.swing.JFrame {
         pastappointment_button = new javax.swing.JButton();
         upcomingappointment_button = new javax.swing.JButton();
         setconsultationslots_button = new javax.swing.JButton();
-        back_button = new javax.swing.JButton();
         nothing = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,17 +44,17 @@ public class LecturerDashboard extends javax.swing.JFrame {
             }
         });
 
-        back_button.setText("<");
-        back_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                back_buttonActionPerformed(evt);
-            }
-        });
-
         nothing.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
         nothing.setForeground(new java.awt.Color(51, 153, 255));
         nothing.setText("APU Psychology Consultation ");
         nothing.setIconTextGap(5);
+
+        jButton1.setText("Log Out");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,36 +62,35 @@ public class LecturerDashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(back_button)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(nothing)
-                .addGap(64, 64, 64))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pastappointment_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(upcomingappointment_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(setconsultationslots_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(70, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nothing, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pastappointment_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(upcomingappointment_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(setconsultationslots_button, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48)))
+                .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(nothing))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(back_button)))
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(16, 16, 16)
+                .addComponent(nothing)
                 .addGap(34, 34, 34)
                 .addComponent(setconsultationslots_button)
                 .addGap(18, 18, 18)
                 .addComponent(upcomingappointment_button)
                 .addGap(18, 18, 18)
                 .addComponent(pastappointment_button)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,13 +121,11 @@ public class LecturerDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_setconsultationslots_buttonActionPerformed
 
-    private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         LoginUI loginUI = new LoginUI();
-
         loginUI.setVisible(true);
-
         this.dispose();
-    }//GEN-LAST:event_back_buttonActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -159,7 +156,7 @@ public class LecturerDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton back_button;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel nothing;
     private javax.swing.JButton pastappointment_button;
     private javax.swing.JButton setconsultationslots_button;
