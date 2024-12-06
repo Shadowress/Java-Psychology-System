@@ -1,0 +1,3 @@
+feedback_id,appointment_id,rating,student_comment,lecturer_comment
+1,2,5,Great session###COMMA### very insightful!,
+2,4,-1,,You’re doing well by addressing your concerns head-on. It’s important to recognize that progress may take time###COMMA### and every step forward is a step toward greater well-being.
