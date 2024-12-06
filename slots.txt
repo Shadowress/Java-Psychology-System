@@ -1,0 +1,1 @@
+slot_id,lecturer_id,date,time

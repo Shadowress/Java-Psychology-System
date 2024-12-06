@@ -1,13 +1,11 @@
 package userinterface;
 
-
-
 public class LoginUI extends javax.swing.JFrame {
+
     public LoginUI() {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -135,9 +133,9 @@ public class LoginUI extends javax.swing.JFrame {
 
     private void register_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_buttonActionPerformed
         RegisterUI registerUI = new RegisterUI();
-    
+
         registerUI.setVisible(true);
-    
+
         this.dispose();
     }//GEN-LAST:event_register_buttonActionPerformed
 
@@ -145,11 +143,7 @@ public class LoginUI extends javax.swing.JFrame {
         //Login to student or lecturer dashboard
     }//GEN-LAST:event_login_buttonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -172,11 +166,8 @@ public class LoginUI extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginUI().setVisible(true);
         });
     }
 

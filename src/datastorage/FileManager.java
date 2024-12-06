@@ -17,6 +17,8 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import userinterface.StartUpUI;
 
 public class FileManager {
 
@@ -25,13 +27,42 @@ public class FileManager {
     private static final Map<Integer, Slot> slots = new HashMap<>();
     private static final Map<Integer, Feedback> feedbacks = new HashMap<>();
 
-    public static void processFiles() {
-        for (StartupFileResource fileResource : StartupFileResource.values()) {
-            initializeFile(fileResource.getFilePath(), fileResource.getFileHeader());
-            // Change to JLabel
-            System.out.println("Loading " + fileResource.getFilePath());
-            fileResource.getLoader();
-        }
+    public static void processFiles(StartUpUI startUpUI, Runnable onLoadingCompleteCallback) {
+        SwingWorker<Void, String> worker = new SwingWorker<Void, String>() {
+            @Override
+            @SuppressWarnings("SleepWhileInLoop")
+            protected Void doInBackground() throws Exception {
+                for (StartupFileResource fileResource : StartupFileResource.values()) {
+                    publish("Initializing " + fileResource.getFilePath());
+                    initializeFile(fileResource.getFilePath(), fileResource.getFileHeader());
+                    fileResource.getLoader();
+
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void process(java.util.List<String> chunks) {
+                for (String message : chunks) {
+                    startUpUI.updateLoadingLabel(message);
+                }
+            }
+
+            @Override
+            protected void done() {
+                if (onLoadingCompleteCallback != null) {
+                    onLoadingCompleteCallback.run();
+                }
+            }
+        };
+
+        worker.execute();
     }
 
     private static void initializeFile(String filePath, String fileHeader) {
