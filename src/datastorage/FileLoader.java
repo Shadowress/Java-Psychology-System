@@ -27,7 +27,7 @@ public class FileLoader {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             reader.readLine();
-            
+
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
 
@@ -115,7 +115,7 @@ public class FileLoader {
             reader.readLine();
 
             while ((line = reader.readLine()) != null) {
-                String[] feedbackData = line.split(",");
+                String[] feedbackData = line.split(",", -1);
 
                 if (feedbackData.length == 5) {
                     int feedbackID = Integer.parseInt(feedbackData[0].trim());

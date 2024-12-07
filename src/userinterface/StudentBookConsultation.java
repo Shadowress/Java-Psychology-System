@@ -50,7 +50,7 @@ public class StudentBookConsultation extends javax.swing.JFrame {
         tableModel.setRowCount(0);
 
         for (String[] slot : SlotManager.getAvailableLecturerSlots(lecturerID)) {
-            tableModel.addRow(new Object[]{slot[0], slot[1]});
+            tableModel.addRow(slot);
         }
     }
 

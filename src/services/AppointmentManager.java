@@ -6,7 +6,9 @@ import entities.AppointmentStatus;
 import entities.Slot;
 import entities.UserType;
 import entities.Users;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,47 @@ public class AppointmentManager {
         UI.dispose();
     }
 
-    public static List<String[]> getUserAppointments(int userID) {
+    public static List<String[]> getUserPastAppointments(int userID) {
+        Map<Integer, Appointment> appointments = FileManager.getAppointments();
+        Map<Integer, Slot> slots = FileManager.getSlots();
+        Map<Integer, Users> users = FileManager.getUsers();
+
+        LocalDateTime now = LocalDateTime.now();
+        Users currentUser = SessionManager.getCurrentUser();
+        UserType userType = users.get(userID).getUserType();
+
+        List<String[]> userAppointments = new ArrayList<>();
+
+        // Lecturer/Student,Date, Time, Status 
+        for (Appointment appointment : appointments.values()) {
+            LocalDateTime slotDateTime = LocalDateTime.of(slots.get(appointment.getSlotID()).getDate(), slots.get(appointment.getSlotID()).getTime());
+
+            if (userType == UserType.STUDENT && appointment.getStudentID() != currentUser.getUserID()) {
+                continue;
+            }
+            
+            if (userType == UserType.LECTURER && slots.get(appointment.getSlotID()).getLecturerID() != currentUser.getUserID()) {
+                continue;
+            }
+
+            if (slotDateTime.isBefore(now)) {
+                String lecturerOrStudentName = null;
+                String slotDate = slots.get(appointment.getSlotID()).getDate().toString();
+                String slotTime = slots.get(appointment.getSlotID()).getTime().toString();
+                String status = appointment.getStatus().name().toLowerCase().replace("_", " ");
+
+                if (userType == UserType.STUDENT) {
+                    lecturerOrStudentName = users.get(slots.get(appointment.getSlotID()).getLecturerID()).getUsername();
+                } else if (userType == UserType.LECTURER) {
+                    lecturerOrStudentName = users.get(appointment.getStudentID()).getUsername();
+                }
+                userAppointments.add(new String[]{lecturerOrStudentName, slotDate, slotTime, status});
+            }
+        }
+        return userAppointments;
+    }
+
+    public static List<String[]> getUserUpcomingAppointments(int userID) {
         Map<Integer, Appointment> appointments = FileManager.getAppointments();
         Map<Integer, Slot> slots = FileManager.getSlots();
         Map<Integer, Users> users = FileManager.getUsers();
@@ -41,20 +83,22 @@ public class AppointmentManager {
         UserType userType = users.get(userID).getUserType();
         List<String[]> userAppointments = new ArrayList<>();
 
-        // Type(Upcoming/Past), Lecturer/Student,Date, Time, Status 
+        // Lecturer/Student,Date, Time, Status 
         for (Appointment appointment : appointments.values()) {
-            String type = slots.get(appointment.getSlotID()).getDate().atTime(slots.get(appointment.getSlotID()).getTime()).isAfter(now) ? "Upcoming" : "Past";
-            String lecturerOrStudentName = null;
-            String slotDate = slots.get(appointment.getSlotID()).getDate().toString();
-            String slotTime = slots.get(appointment.getSlotID()).getTime().toString();
-            String status = appointment.getStatus().name().toLowerCase().replace("_", " ");
+            LocalDateTime slotDateTime = LocalDateTime.of(slots.get(appointment.getSlotID()).getDate(), slots.get(appointment.getSlotID()).getTime());
+            if (slotDateTime.isAfter(now)) {
+                String lecturerOrStudentName = null;
+                String slotDate = slots.get(appointment.getSlotID()).getDate().toString();
+                String slotTime = slots.get(appointment.getSlotID()).getTime().toString();
+                String status = appointment.getStatus().name().toLowerCase().replace("_", " ");
 
-            if (userType == UserType.STUDENT) {
-                lecturerOrStudentName = users.get(slots.get(appointment.getSlotID()).getLecturerID()).getUsername();
-            } else if (userType == UserType.LECTURER) {
-                lecturerOrStudentName = users.get(appointment.getStudentID()).getUsername();
+                if (userType == UserType.STUDENT) {
+                    lecturerOrStudentName = users.get(slots.get(appointment.getSlotID()).getLecturerID()).getUsername();
+                } else if (userType == UserType.LECTURER) {
+                    lecturerOrStudentName = users.get(appointment.getStudentID()).getUsername();
+                }
+                userAppointments.add(new String[]{lecturerOrStudentName, slotDate, slotTime, status});
             }
-            userAppointments.add(new String[]{type, lecturerOrStudentName, slotDate, slotTime, status});
         }
         return userAppointments;
     }
