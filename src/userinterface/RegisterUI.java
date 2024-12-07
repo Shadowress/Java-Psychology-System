@@ -158,10 +158,6 @@ public class RegisterUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RegisterUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(() -> {
-            new RegisterUI().setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

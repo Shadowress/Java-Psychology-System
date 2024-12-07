@@ -1,9 +1,10 @@
 package userinterface;
 
 import datastorage.FileManager;
-import entities.Slot;
 import entities.UserType;
 import entities.Users;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -44,6 +45,8 @@ public class StudentBookConsultation extends javax.swing.JFrame {
             }
         };
         slotTable.setModel(tableModel);
+        slotTable.getTableHeader().setReorderingAllowed(false);
+        slotTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
 
     private void addSlotsToTable(int lecturerID) {
@@ -267,18 +270,11 @@ public class StudentBookConsultation extends javax.swing.JFrame {
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(null, "No slot is selected!", "Selection Error", JOptionPane.WARNING_MESSAGE);
         } else {
-            String date = (String) tableModel.getValueAt(selectedRow, 0);
-            String time = (String) tableModel.getValueAt(selectedRow, 1);
+            LocalDate date = LocalDate.parse((String) tableModel.getValueAt(selectedRow, 0));
+            LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 1));
 
             int studentID = SessionManager.getCurrentUser().getUserID();
-            int slotID = 0;
-
-            for (Slot slot : FileManager.getSlots().values()) {
-                if (slot.getLecturerID() == lecturerID && slot.getDate().toString().equals(date) && slot.getTime().toString().equals(time)) {
-                    slotID = slot.getSlotID();
-                    break;
-                }
-            }
+            int slotID = FileManager.getSlotIDFromSlotDetails(lecturerID, date, time);
 
             AppointmentManager.makeAppointment(this, studentID, slotID);
         }
@@ -289,14 +285,7 @@ public class StudentBookConsultation extends javax.swing.JFrame {
             String selectedLecturerName = lecturerList.getSelectedValue();
 
             if (selectedLecturerName != null) {
-                for (Users user : FileManager.getUsers().values()) {
-                    if (user.getUsername().equals(selectedLecturerName)) {
-                        lecturerID = user.getUserID();
-                        break;
-                    }
-                }
-
-                addSlotsToTable(lecturerID);
+                addSlotsToTable(FileManager.getUserIDFromUsername(selectedLecturerName));
             }
         }
     }//GEN-LAST:event_lecturerListValueChanged
@@ -314,10 +303,6 @@ public class StudentBookConsultation extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(StudentBookConsultation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(() -> {
-            new StudentBookConsultation().setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

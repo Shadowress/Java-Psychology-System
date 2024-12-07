@@ -122,6 +122,43 @@ public class FileManager {
         return new HashMap<>(feedbacks);
     }
 
+    // Get ID from details
+    public static int getUserIDFromUsername(String username) {
+        for (Users user : users.values()) {
+            if (user.getUsername().equals(username)) {
+                return user.getUserID();
+            }
+        }
+        return 0;
+    }
+
+    public static int getAppointmentIDFromSlotID(int slotID) {
+        for (Appointment appointment : appointments.values()) {
+            if (appointment.getSlotID() == slotID && appointment.getStatus() != AppointmentStatus.CANCELLED) {
+                return appointment.getAppointmentID();
+            }
+        }
+        return 0;
+    }
+
+    public static int getSlotIDFromSlotDetails(int lecturerID, LocalDate date, LocalTime time) {
+        for (Slot slot : slots.values()) {
+            if (slot.getLecturerID() == lecturerID && slot.getDate() == date && slot.getTime() == time) {
+                return slot.getSlotID();
+            }
+        }
+        return 0;
+    }
+
+    public static int getFeedbackIDFromAppointmentID(int appointmentID) {
+        for (Feedback feedback : feedbacks.values()) {
+            if (appointmentID == feedback.getAppointmentID()) {
+                return feedback.getFeedbackID();
+            }
+        }
+        return 0;
+    }
+
     public static void addUserToCode(int userID, Users user) {
         users.put(userID, user);
     }

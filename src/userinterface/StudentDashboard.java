@@ -1,5 +1,10 @@
 package userinterface;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import services.AppointmentManager;
+import services.SessionManager;
+
 public class StudentDashboard extends javax.swing.JFrame {
 
     public StudentDashboard() {
@@ -109,7 +114,16 @@ public class StudentDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_pastappt_buttonActionPerformed
 
     private void upcomingappt_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomingappt_buttonActionPerformed
-        StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment();
+        List<String[]> upcomingAppointments = AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID());
+
+        if (upcomingAppointments.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You do not have any upcoming appointments.", "No Appointments", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String[] upcomingAppointmentDetails = upcomingAppointments.get(0);
+
+        StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(upcomingAppointmentDetails);
         studentUpcomingAppointment.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_upcomingappt_buttonActionPerformed
@@ -133,10 +147,6 @@ public class StudentDashboard extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(StudentDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        java.awt.EventQueue.invokeLater(() -> {
-            new StudentDashboard().setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

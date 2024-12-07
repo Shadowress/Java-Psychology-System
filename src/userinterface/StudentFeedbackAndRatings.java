@@ -3,14 +3,18 @@ package userinterface;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import services.FeedbackManager;
 
 public class StudentFeedbackAndRatings extends javax.swing.JFrame {
 
     private int selectedRating = 0;
     private JButton selectedButton = null;
+    private final int appointmentID;
 
-    public StudentFeedbackAndRatings(String[] appointmentDetails) {
+    public StudentFeedbackAndRatings(int appointmentID, String[] appointmentDetails) {
         initComponents();
+
+        this.appointmentID = appointmentID;
 
         if (appointmentDetails != null && appointmentDetails.length == 4) {
             jLabel5.setText("Lecturer Name: " + appointmentDetails[0]);
@@ -18,7 +22,7 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
             jLabel6.setText("Time: " + appointmentDetails[2]);
             jLabel8.setText("Status: " + appointmentDetails[3]);
         }
-        
+
         initStarButtons();
     }
 
@@ -202,9 +206,7 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(fivestar_button))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(180, 180, 180)
-                                            .addComponent(submit_button))
+                                        .addComponent(submit_button)
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -231,9 +233,9 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(back_button)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel6))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -286,8 +288,13 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
             return;
         }
 
-        // Process
-        // Display successful
+        /* Note: for addStudentFeedback check if there are any existing feedback of the appointment that has a lecturer feedback in it
+                 update the existing feedback if there is
+                 else call FileManager.addNewFeedback(appointmentID, rating, studentComment, lecturerComment) and put lecturerComment as null
+         */
+        // FeedbackManager.addStudentFeedback(appointmentID, selectedRating, jTextArea2.getText().trim());
+        JOptionPane.showMessageDialog(null, "Thank you for your feedback!", "Feedback Submitted", JOptionPane.INFORMATION_MESSAGE);
+
         StudentPastAppointment studentPastAppointment = new StudentPastAppointment();
         studentPastAppointment.setVisible(true);
         this.dispose();
@@ -312,12 +319,6 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(StudentFeedbackAndRatings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(() -> {
-            String[] appointmentDetails = {"", "", "", ""};
-
-            new StudentFeedbackAndRatings(appointmentDetails).setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

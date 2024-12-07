@@ -1,11 +1,10 @@
 package userinterface;
 
 import datastorage.FileManager;
-import entities.Appointment;
 import entities.AppointmentStatus;
 import entities.Feedback;
-import entities.Slot;
-import entities.Users;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -31,6 +30,8 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             }
         };
         pastAppointmentTable.setModel(tableModel);
+        pastAppointmentTable.getTableHeader().setReorderingAllowed(false);
+        pastAppointmentTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         tableModel.setRowCount(0);
 
@@ -56,6 +57,7 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         jButton1.setText("Cancel");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Bernard MT Condensed", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 153, 255));
@@ -147,13 +149,13 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         int selectedRow = pastAppointmentTable.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "No past appointment is selected!", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No past appointment is selected", "Selection Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         String lecturerName = (String) tableModel.getValueAt(selectedRow, 0);
-        String date = (String) tableModel.getValueAt(selectedRow, 1);
-        String time = (String) tableModel.getValueAt(selectedRow, 2);
+        LocalDate date = LocalDate.parse((String) tableModel.getValueAt(selectedRow, 1));
+        LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 2));
         String status = (String) tableModel.getValueAt(selectedRow, 3);
 
         if (status.equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
@@ -161,35 +163,11 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             return;
         }
 
-        Map<Integer, Users> users = FileManager.getUsers();
-        Map<Integer, Appointment> appointments = FileManager.getAppointments();
-        Map<Integer, Slot> slots = FileManager.getSlots();
         Map<Integer, Feedback> feedbacks = FileManager.getFeedbacks();
 
-        int appointmentID = 0;
-        int slotID = 0;
-        int feedbackID = 0;
-
-        for (Slot slot : slots.values()) {
-            if (users.get(slot.getLecturerID()).getUsername().equals(lecturerName) && slot.getDate().toString().equals(date) && slot.getTime().toString().equals(time)) {
-                slotID = slot.getSlotID();
-                break;
-            }
-        }
-
-        for (Appointment appointment : appointments.values()) {
-            if (slotID == appointment.getSlotID() && appointment.getStatus() != AppointmentStatus.CANCELLED) {
-                appointmentID = appointment.getAppointmentID();
-                break;
-            }
-        }
-
-        for (Feedback feedback : feedbacks.values()) {
-            if (appointmentID == feedback.getAppointmentID()) {
-                feedbackID = feedback.getFeedbackID();
-                break;
-            }
-        }
+        int slotID = FileManager.getSlotIDFromSlotDetails(FileManager.getUserIDFromUsername(lecturerName), date, time);
+        int appointmentID = FileManager.getAppointmentIDFromSlotID(slotID);
+        int feedbackID = FileManager.getFeedbackIDFromAppointmentID(appointmentID);
 
         if (feedbackID != 0 && feedbacks.get(feedbackID).getRating() != -1) {
             JOptionPane.showMessageDialog(null,
@@ -201,9 +179,9 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             return;
         }
 
-        String[] appointmentDetails = new String[]{lecturerName, date, time, status};
+        String[] appointmentDetails = new String[]{lecturerName, date.toString(), time.toString(), status};
 
-        StudentFeedbackAndRatings studentFeedbackAndRatings = new StudentFeedbackAndRatings(appointmentDetails);
+        StudentFeedbackAndRatings studentFeedbackAndRatings = new StudentFeedbackAndRatings(appointmentID, appointmentDetails);
         studentFeedbackAndRatings.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_feedback_buttonActionPerformed
@@ -212,13 +190,13 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         int selectedRow = pastAppointmentTable.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "No past appointment is selected!", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No past appointment is selected", "Selection Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         String lecturerName = (String) tableModel.getValueAt(selectedRow, 0);
-        String date = (String) tableModel.getValueAt(selectedRow, 1);
-        String time = (String) tableModel.getValueAt(selectedRow, 2);
+        LocalDate date = LocalDate.parse((String) tableModel.getValueAt(selectedRow, 1));
+        LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 2));
         String status = (String) tableModel.getValueAt(selectedRow, 3);
 
         if (status.equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
@@ -226,36 +204,12 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             return;
         }
 
-        Map<Integer, Users> users = FileManager.getUsers();
-        Map<Integer, Appointment> appointments = FileManager.getAppointments();
-        Map<Integer, Slot> slots = FileManager.getSlots();
         Map<Integer, Feedback> feedbacks = FileManager.getFeedbacks();
 
-        int appointmentID = 0;
-        int slotID = 0;
-        int feedbackID = 0;
+        int slotID = FileManager.getSlotIDFromSlotDetails(FileManager.getUserIDFromUsername(lecturerName), date, time);
+        int appointmentID = FileManager.getAppointmentIDFromSlotID(slotID);
+        int feedbackID = FileManager.getFeedbackIDFromAppointmentID(appointmentID);
 
-        for (Slot slot : slots.values()) {
-            if (users.get(slot.getLecturerID()).getUsername().equals(lecturerName) && slot.getDate().toString().equals(date) && slot.getTime().toString().equals(time)) {
-                slotID = slot.getSlotID();
-                break;
-            }
-        }
-
-        for (Appointment appointment : appointments.values()) {
-            if (slotID == appointment.getSlotID() && appointment.getStatus() != AppointmentStatus.CANCELLED) {
-                appointmentID = appointment.getAppointmentID();
-                break;
-            }
-        }
-
-        for (Feedback feedback : feedbacks.values()) {
-            if (appointmentID == feedback.getAppointmentID()) {
-                feedbackID = feedback.getFeedbackID();
-                break;
-            }
-        }
-        
         if (feedbackID != 0 && feedbacks.get(feedbackID).getLecturerComment() != null) {
             JOptionPane.showMessageDialog(null,
                     "Comment: " + feedbacks.get(feedbackID).getLecturerComment(),
@@ -265,7 +219,7 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             return;
         }
 
-        JOptionPane.showMessageDialog(null, "The lecturer did not provide any comments.", "No Comments", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The lecturer did not provide any comments", "No Comments", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_viewfeedback_buttonActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
@@ -287,10 +241,6 @@ public class StudentPastAppointment extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(StudentPastAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(() -> {
-            new StudentPastAppointment().setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

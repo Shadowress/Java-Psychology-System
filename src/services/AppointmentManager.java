@@ -6,9 +6,7 @@ import entities.AppointmentStatus;
 import entities.Slot;
 import entities.UserType;
 import entities.Users;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,20 +38,18 @@ public class AppointmentManager {
         Map<Integer, Users> users = FileManager.getUsers();
 
         LocalDateTime now = LocalDateTime.now();
-        Users currentUser = SessionManager.getCurrentUser();
         UserType userType = users.get(userID).getUserType();
 
         List<String[]> userAppointments = new ArrayList<>();
 
-        // Lecturer/Student,Date, Time, Status 
         for (Appointment appointment : appointments.values()) {
             LocalDateTime slotDateTime = LocalDateTime.of(slots.get(appointment.getSlotID()).getDate(), slots.get(appointment.getSlotID()).getTime());
 
-            if (userType == UserType.STUDENT && appointment.getStudentID() != currentUser.getUserID()) {
+            if (userType == UserType.STUDENT && appointment.getStudentID() != userID) {
                 continue;
             }
-            
-            if (userType == UserType.LECTURER && slots.get(appointment.getSlotID()).getLecturerID() != currentUser.getUserID()) {
+
+            if (userType == UserType.LECTURER && slots.get(appointment.getSlotID()).getLecturerID() != userID) {
                 continue;
             }
 
@@ -81,11 +77,20 @@ public class AppointmentManager {
 
         LocalDateTime now = LocalDateTime.now();
         UserType userType = users.get(userID).getUserType();
+
         List<String[]> userAppointments = new ArrayList<>();
 
-        // Lecturer/Student,Date, Time, Status 
         for (Appointment appointment : appointments.values()) {
             LocalDateTime slotDateTime = LocalDateTime.of(slots.get(appointment.getSlotID()).getDate(), slots.get(appointment.getSlotID()).getTime());
+
+            if (userType == UserType.STUDENT && appointment.getStudentID() != userID) {
+                continue;
+            }
+
+            if (userType == UserType.LECTURER && slots.get(appointment.getSlotID()).getLecturerID() != userID) {
+                continue;
+            }
+
             if (slotDateTime.isAfter(now)) {
                 String lecturerOrStudentName = null;
                 String slotDate = slots.get(appointment.getSlotID()).getDate().toString();
