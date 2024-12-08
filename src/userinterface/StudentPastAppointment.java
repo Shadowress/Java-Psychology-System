@@ -107,23 +107,27 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(back_button)
-                        .addGap(80, 80, 80)
-                        .addComponent(feedback_button)
-                        .addGap(67, 67, 67)
-                        .addComponent(viewfeedback_button))
+                        .addComponent(back_button))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(78, 78, 78)
+                                        .addComponent(feedback_button)
+                                        .addGap(67, 67, 67)
+                                        .addComponent(viewfeedback_button))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(184, 184, 184)
+                                        .addComponent(jLabel1)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,8 +162,8 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 2));
         String status = (String) tableModel.getValueAt(selectedRow, 3);
 
-        if (status.equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
-            JOptionPane.showMessageDialog(null, "You cannot provide feedback to cancelled appointments", "Feedback Error", JOptionPane.ERROR_MESSAGE);
+        if (!status.equalsIgnoreCase(AppointmentStatus.COMPLETED.toString())) {
+            JOptionPane.showMessageDialog(null, "You can only provide feedback to completed appointments", "Feedback Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -199,8 +203,8 @@ public class StudentPastAppointment extends javax.swing.JFrame {
         LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 2));
         String status = (String) tableModel.getValueAt(selectedRow, 3);
 
-        if (status.equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
-            JOptionPane.showMessageDialog(null, "There is no feedback for cancelled appointments", "Feedback Not Available", JOptionPane.WARNING_MESSAGE);
+        if (!status.equalsIgnoreCase(AppointmentStatus.COMPLETED.toString())) {
+            JOptionPane.showMessageDialog(null, "There can only be feedback for completed appointments", "Feedback Not Available", JOptionPane.WARNING_MESSAGE);
             return;
         }
 

@@ -12,11 +12,6 @@ import java.util.Map;
 
 public class SlotManager {
 
-    //TODO: Call FileManager directly from UI class
-    public static void setSlot(int lecturerID, LocalDate date, LocalTime time) {
-        FileManager.addNewSlot(lecturerID, date, time);
-    }
-
     public static List<String[]> getAvailableLecturerSlots(int userID) {
         Map<Integer, Appointment> appointments = FileManager.getAppointments();
         Map<Integer, Slot> slots = FileManager.getSlots();
@@ -50,5 +45,14 @@ public class SlotManager {
             }
         }
         return lecturerSlots;
+    }
+
+    public static boolean isSlotAlreadySet(int lecturerID, LocalDate date, LocalTime time) {
+        for (Slot slot : FileManager.getSlots().values()) {
+            if (slot.getLecturerID() == lecturerID && slot.getDate().equals(date) && slot.getTime().equals(time)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

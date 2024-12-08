@@ -143,7 +143,7 @@ public class FileManager {
 
     public static int getSlotIDFromSlotDetails(int lecturerID, LocalDate date, LocalTime time) {
         for (Slot slot : slots.values()) {
-            if (slot.getLecturerID() == lecturerID && slot.getDate() == date && slot.getTime() == time) {
+            if (slot.getLecturerID() == lecturerID && slot.getDate().equals(date) && slot.getTime().equals(time)) {
                 return slot.getSlotID();
             }
         }
