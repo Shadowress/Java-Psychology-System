@@ -64,6 +64,7 @@ public class AppointmentManager {
                 } else if (userType == UserType.LECTURER) {
                     lecturerOrStudentName = users.get(appointment.getStudentID()).getUsername();
                 }
+
                 userAppointments.add(new String[]{lecturerOrStudentName, slotDate, slotTime, status});
             }
         }
@@ -102,7 +103,31 @@ public class AppointmentManager {
                 } else if (userType == UserType.LECTURER) {
                     lecturerOrStudentName = users.get(appointment.getStudentID()).getUsername();
                 }
+
                 userAppointments.add(new String[]{lecturerOrStudentName, slotDate, slotTime, status});
+            }
+        }
+        return userAppointments;
+    }
+
+    public static List<String[]> getUserRescheduleAppointments(int userID) {
+        Map<Integer, Slot> slots = FileManager.getSlots();
+
+        List<String[]> userAppointments = new ArrayList<>();
+
+        for (Appointment appointment : FileManager.getAppointments().values()) {
+            if (!appointment.getStatus().equals(AppointmentStatus.RESCHEDULE_PENDING)) {
+                continue;
+            }
+
+            if (slots.get(appointment.getSlotID()).getLecturerID() == userID) {
+                String studentName = FileManager.getUser(appointment.getStudentID()).getUsername();
+                String slotDate = slots.get(appointment.getSlotID()).getDate().toString();
+                String slotTime = slots.get(appointment.getSlotID()).getTime().toString();
+                String rescheduleDate = slots.get(appointment.getRescheduleSlotID()).getDate().toString();
+                String rescheduleTime = slots.get(appointment.getRescheduleSlotID()).getTime().toString();
+
+                userAppointments.add(new String[]{studentName, slotDate, slotTime, rescheduleDate, rescheduleTime});
             }
         }
         return userAppointments;

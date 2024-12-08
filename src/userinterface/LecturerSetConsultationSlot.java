@@ -44,6 +44,7 @@ public class LecturerSetConsultationSlot extends javax.swing.JFrame {
     private void addSlotsToTable() {
         tableModel.setRowCount(0);
 
+        // Change to only show upcoming
         for (Slot slot : FileManager.getSlots().values()) {
             if (slot.getLecturerID() == SessionManager.getCurrentUser().getUserID()) {
                 String[] row = {slot.getDate().toString(), slot.getTime().toString()};

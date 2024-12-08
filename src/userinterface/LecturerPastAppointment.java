@@ -34,6 +34,10 @@ public class LecturerPastAppointment extends javax.swing.JFrame {
         pastAppointmentTable.getTableHeader().setReorderingAllowed(false);
         pastAppointmentTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        addSlotsToTable();
+    }
+
+    private void addSlotsToTable() {
         tableModel.setRowCount(0);
 
         for (String[] appointment : AppointmentManager.getUserPastAppointments(SessionManager.getCurrentUser().getUserID())) {
@@ -275,7 +279,7 @@ public class LecturerPastAppointment extends javax.swing.JFrame {
         int selectedRow = pastAppointmentTable.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Please select an appointment to mark as completed!", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an appointment to mark as completed", "Selection Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -308,10 +312,49 @@ public class LecturerPastAppointment extends javax.swing.JFrame {
             FileWriterAppender.writeAppointments();
             JOptionPane.showMessageDialog(null, "Appointment has been successfully marked as completed", "Appointment Marked As Completed", JOptionPane.INFORMATION_MESSAGE);
         }
+
+        addSlotsToTable();
     }//GEN-LAST:event_markCompletedActionPerformed
 
     private void markCancelledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markCancelledActionPerformed
+        int selectedRow = pastAppointmentTable.getSelectedRow();
 
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select an appointment to mark as cancelled", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        LocalDate date = LocalDate.parse((String) tableModel.getValueAt(selectedRow, 1));
+        LocalTime time = LocalTime.parse((String) tableModel.getValueAt(selectedRow, 2));
+        String status = (String) tableModel.getValueAt(selectedRow, 3);
+
+        if (status.equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
+            JOptionPane.showMessageDialog(null, "This appointment is already marked as cancelled", "Information", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (status.equalsIgnoreCase(AppointmentStatus.COMPLETED.toString())) {
+            JOptionPane.showMessageDialog(null, "Completed appointments cannot be marked as completed", "Action Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int slotID = FileManager.getSlotIDFromSlotDetails(SessionManager.getCurrentUser().getUserID(), date, time);
+        int appointmentID = FileManager.getAppointmentIDFromSlotID(slotID);
+
+        int confirmation = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to mark this appointment as cancelled?",
+                "Confirm Mark as Completed",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+            FileManager.getAppointment(appointmentID).setStatus(AppointmentStatus.CANCELLED);
+            FileWriterAppender.writeAppointments();
+            JOptionPane.showMessageDialog(null, "Appointment has been successfully marked as cancelled", "Appointment Marked As Cancelled", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        addSlotsToTable();
     }//GEN-LAST:event_markCancelledActionPerformed
 
     public static void main(String args[]) {
