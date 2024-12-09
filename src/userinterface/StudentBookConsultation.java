@@ -286,6 +286,7 @@ public class StudentBookConsultation extends javax.swing.JFrame {
 
             if (selectedLecturerName != null) {
                 addSlotsToTable(FileManager.getUserIDFromUsername(selectedLecturerName));
+                lecturerID = FileManager.getUserIDFromUsername(selectedLecturerName);
             }
         }
     }//GEN-LAST:event_lecturerListValueChanged

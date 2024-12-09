@@ -1,5 +1,6 @@
 package userinterface;
 
+import entities.AppointmentStatus;
 import java.util.List;
 import javax.swing.JOptionPane;
 import services.AppointmentManager;
@@ -116,12 +117,15 @@ public class StudentDashboard extends javax.swing.JFrame {
     private void upcomingappt_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomingappt_buttonActionPerformed
         List<String[]> upcomingAppointments = AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID());
 
-        if (upcomingAppointments.isEmpty()) {
+        String[] upcomingAppointmentDetails = upcomingAppointments.stream()
+                .filter(appointment -> !appointment[3].equalsIgnoreCase(AppointmentStatus.CANCELLED.toString()))
+                .findFirst()
+                .orElse(null);
+
+        if (upcomingAppointmentDetails == null) {
             JOptionPane.showMessageDialog(null, "You do not have any upcoming appointments.", "No Appointments", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
-        String[] upcomingAppointmentDetails = upcomingAppointments.get(0);
 
         StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(upcomingAppointmentDetails);
         studentUpcomingAppointment.setVisible(true);

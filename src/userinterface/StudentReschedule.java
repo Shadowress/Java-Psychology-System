@@ -1,19 +1,23 @@
 package userinterface;
 
 import datastorage.FileManager;
+import datastorage.FileWriterAppender;
+import entities.Appointment;
+import entities.AppointmentStatus;
+import entities.Slot;
+import entities.Users;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import services.AppointmentManager;
-import services.SessionManager;
 import services.SlotManager;
 
 public class StudentReschedule extends javax.swing.JFrame {
 
     private DefaultTableModel tableModel;
     private int lecturerID;
-    private int appointmentID;
+    private final int appointmentID;
     private int rescheduleSlotID;
 
     public StudentReschedule(int appointmentID, String lecturerName) {
@@ -21,6 +25,8 @@ public class StudentReschedule extends javax.swing.JFrame {
         initializeSlotTable(lecturerName);
 
         jLabel5.setText("Lecturer Name: " + lecturerName);
+
+        this.appointmentID = appointmentID;
     }
 
     private void initializeSlotTable(String lecturerName) {
@@ -161,17 +167,41 @@ public class StudentReschedule extends javax.swing.JFrame {
 
             rescheduleSlotID = FileManager.getSlotIDFromSlotDetails(lecturerID, date, time);
 
-            // AppointmentManager.rescheduleAppointment(appointmentID, rescheduleSlotID);
+            FileManager.getAppointment(appointmentID).setStatus(AppointmentStatus.RESCHEDULE_PENDING);
+            FileManager.getAppointment(appointmentID).setRescheduleSlotID(rescheduleSlotID);
+            FileWriterAppender.writeAppointments();
             JOptionPane.showMessageDialog(null, "Your reschedule request has been successfully submitted", "Reschedule Request Submitted", JOptionPane.INFORMATION_MESSAGE);
 
-            StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID()).get(0));
+            Map<Integer, Users> users = FileManager.getUsers();
+            Map<Integer, Appointment> appointments = FileManager.getAppointments();
+            Map<Integer, Slot> slots = FileManager.getSlots();
+
+            int slotID = appointments.get(appointmentID).getSlotID();
+
+            String lecturerName = users.get(slots.get(slotID).getLecturerID()).getUsername();
+            String slotDate = FileManager.getSlot(slotID).getDate().toString();
+            String slotTime = FileManager.getSlot(slotID).getTime().toString();
+            String status = FileManager.getAppointment(appointmentID).getStatus().toString().toLowerCase().replace("_", " ");
+
+            StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(new String[]{lecturerName, slotDate, slotTime, status});
             studentUpcomingAppointment.setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_change_buttonActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
-        StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID()).get(0));
+        Map<Integer, Users> users = FileManager.getUsers();
+        Map<Integer, Appointment> appointments = FileManager.getAppointments();
+        Map<Integer, Slot> slots = FileManager.getSlots();
+
+        int slotID = appointments.get(appointmentID).getSlotID();
+
+        String lecturerName = users.get(slots.get(slotID).getLecturerID()).getUsername();
+        String slotDate = FileManager.getSlot(slotID).getDate().toString();
+        String slotTime = FileManager.getSlot(slotID).getTime().toString();
+        String status = FileManager.getAppointment(appointmentID).getStatus().toString().toLowerCase().replace("_", " ");
+
+        StudentUpcomingAppointment studentUpcomingAppointment = new StudentUpcomingAppointment(new String[]{lecturerName, slotDate, slotTime, status});
         studentUpcomingAppointment.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_back_buttonActionPerformed

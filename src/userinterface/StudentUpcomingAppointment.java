@@ -1,6 +1,7 @@
 package userinterface;
 
 import datastorage.FileManager;
+import datastorage.FileWriterAppender;
 import entities.Appointment;
 import entities.AppointmentStatus;
 import entities.Slot;
@@ -27,7 +28,7 @@ public class StudentUpcomingAppointment extends javax.swing.JFrame {
 
         Map<Integer, Appointment> appointments = FileManager.getAppointments();
         Map<Integer, Slot> slots = FileManager.getSlots();
-        
+
         slotID = FileManager.getSlotIDFromSlotDetails(FileManager.getUserIDFromUsername(lecturerName), date, time);
         appointmentID = FileManager.getAppointmentIDFromSlotID(slotID);
 
@@ -181,8 +182,9 @@ public class StudentUpcomingAppointment extends javax.swing.JFrame {
         int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel this appointment?", "Confirm Cancellation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
         if (response == JOptionPane.YES_OPTION) {
-            // Note: Remember to change reschedule_slot_id to -1 as well in cases where the cancelled appointment is requested for rescheduling
-            // AppointmentManager.cancelAppointment(appointmentID);
+            FileManager.getAppointment(appointmentID).setStatus(AppointmentStatus.CANCELLED);
+            FileManager.getAppointment(appointmentID).setRescheduleSlotID(-1);
+            FileWriterAppender.writeAppointments();
             JOptionPane.showMessageDialog(null, "The appointment has been successfully canceled", "Cancellation Successful", JOptionPane.INFORMATION_MESSAGE);
 
             StudentDashboard studentDashboard = new StudentDashboard();

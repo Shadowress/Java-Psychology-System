@@ -1,1 +1,0 @@
-appointment_id,student_id,slot_id,status

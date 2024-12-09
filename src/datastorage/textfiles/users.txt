@@ -3,4 +3,3 @@ user_id,username,password,user_type
 2,Jane Doe,password456,STUDENT
 3,Dr. Smith,password789,LECTURER
 4,Dr. Brown,password101,LECTURER
-5,sam,pass,STUDENT

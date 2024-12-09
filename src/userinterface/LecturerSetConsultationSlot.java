@@ -3,6 +3,7 @@ package userinterface;
 import datastorage.FileManager;
 import entities.Slot;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -44,11 +45,14 @@ public class LecturerSetConsultationSlot extends javax.swing.JFrame {
     private void addSlotsToTable() {
         tableModel.setRowCount(0);
 
-        // Change to only show upcoming
         for (Slot slot : FileManager.getSlots().values()) {
             if (slot.getLecturerID() == SessionManager.getCurrentUser().getUserID()) {
-                String[] row = {slot.getDate().toString(), slot.getTime().toString()};
-                tableModel.addRow(row);
+                LocalDateTime slotDateTime = LocalDateTime.of(slot.getDate(), slot.getTime());
+
+                if (slotDateTime.isAfter(LocalDateTime.now())) {
+                    String[] row = {slot.getDate().toString(), slot.getTime().toString()};
+                    tableModel.addRow(row);
+                }
             }
         }
     }
@@ -230,7 +234,7 @@ public class LecturerSetConsultationSlot extends javax.swing.JFrame {
         LocalTime time = LocalTime.parse((String) timeSelection.getSelectedItem(), DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH));
 
         if (!date.isAfter(currentDate.plusDays(2))) {
-            JOptionPane.showMessageDialog(null, "The selected date must be at least 3 days from today", "Invalid Date Selection", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "The selected date must be at least 3 days after today", "Invalid Date Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 

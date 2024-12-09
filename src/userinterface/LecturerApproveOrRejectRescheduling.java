@@ -1,5 +1,11 @@
 package userinterface;
 
+import datastorage.FileManager;
+import datastorage.FileWriterAppender;
+import entities.AppointmentStatus;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import services.AppointmentManager;
 import services.SessionManager;
@@ -22,9 +28,9 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
                 return false;
             }
         };
-        upcomingAppointmentTable.setModel(tableModel);
-        upcomingAppointmentTable.getTableHeader().setReorderingAllowed(false);
-        upcomingAppointmentTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        rescheduleAppointmentTable.setModel(tableModel);
+        rescheduleAppointmentTable.getTableHeader().setReorderingAllowed(false);
+        rescheduleAppointmentTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         addRescheduleAppointmentToTable();
     }
@@ -33,6 +39,7 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
         tableModel.setRowCount(0);
 
         for (String[] appointment : AppointmentManager.getUserRescheduleAppointments(SessionManager.getCurrentUser().getUserID())) {
+
             tableModel.addRow(appointment);
         }
     }
@@ -46,7 +53,7 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
         back_button = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane4 = new javax.swing.JScrollPane();
-        upcomingAppointmentTable = new javax.swing.JTable();
+        rescheduleAppointmentTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,7 +86,7 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
             }
         });
 
-        upcomingAppointmentTable.setModel(new javax.swing.table.DefaultTableModel(
+        rescheduleAppointmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -90,7 +97,7 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
                 "Student Name", "Date", "Time", "Reschedule Date", "Reschedule Time"
             }
         ));
-        jScrollPane4.setViewportView(upcomingAppointmentTable);
+        jScrollPane4.setViewportView(rescheduleAppointmentTable);
 
         jScrollPane3.setViewportView(jScrollPane4);
 
@@ -142,11 +149,103 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void reject_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reject_buttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_reject_buttonActionPerformed
+        int selectedRow = rescheduleAppointmentTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "No appointment is selected", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String studentName = (String) tableModel.getValueAt(selectedRow, 0);
+        String originalDate = (String) tableModel.getValueAt(selectedRow, 1);
+        String originalTime = (String) tableModel.getValueAt(selectedRow, 2);
+        String rescheduleDate = (String) tableModel.getValueAt(selectedRow, 3);
+        String rescheduleTime = (String) tableModel.getValueAt(selectedRow, 4);
+
+        int confirmation = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to cancel this rescheduling?\n\n" +
+                "Student: " + studentName + "\n"
+                + "Original Slot: " + originalDate + " " + originalTime + "\n"
+                + "Rescheduled Slot: " + rescheduleDate + " " + rescheduleTime,
+                "Confirm Cancellation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+            int appointmentID = FileManager.getAppointmentIDFromSlotID(FileManager.getSlotIDFromSlotDetails(
+                    SessionManager.getCurrentUser().getUserID(),
+                    LocalDate.parse(originalDate),
+                    LocalTime.parse(originalTime)
+            ));
+
+            FileManager.getAppointment(appointmentID).setStatus(AppointmentStatus.SCHEDULED);
+            FileManager.getAppointment(appointmentID).setRescheduleSlotID(-1);
+            FileWriterAppender.writeAppointments();
+
+            JOptionPane.showMessageDialog(null, "The rescheduling has been cancelled successfully", "Cancellation Successful", JOptionPane.INFORMATION_MESSAGE);
+
+            addRescheduleAppointmentToTable();
+
+            if (tableModel.getRowCount() == 0) {
+                LecturerUpcomingAppointment lecturerUpcomingAppointment = new LecturerUpcomingAppointment();
+                lecturerUpcomingAppointment.setVisible(true);
+                this.dispose();
+            }
+        }    }//GEN-LAST:event_reject_buttonActionPerformed
 
     private void approve_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approve_buttonActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = rescheduleAppointmentTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "No appointment is selected", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String studentName = (String) tableModel.getValueAt(selectedRow, 0);
+        String originalDate = (String) tableModel.getValueAt(selectedRow, 1);
+        String originalTime = (String) tableModel.getValueAt(selectedRow, 2);
+        String rescheduleDate = (String) tableModel.getValueAt(selectedRow, 3);
+        String rescheduleTime = (String) tableModel.getValueAt(selectedRow, 4);
+
+        int confirmation = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to approve this rescheduling?\n\n" +                
+                "Student: " + studentName + "\n"
+                + "Original Slot: " + originalDate + " " + originalTime + "\n"
+                + "Rescheduled Slot: " + rescheduleDate + " " + rescheduleTime,
+                "Confirm Approval",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+            int appointmentID = FileManager.getAppointmentIDFromSlotID(FileManager.getSlotIDFromSlotDetails(
+                    SessionManager.getCurrentUser().getUserID(),
+                    LocalDate.parse(originalDate),
+                    LocalTime.parse(originalTime)
+            ));
+
+            int rescheduleSlotID = FileManager.getSlotIDFromSlotDetails(
+                    SessionManager.getCurrentUser().getUserID(),
+                    LocalDate.parse(rescheduleDate),
+                    LocalTime.parse(rescheduleTime)
+            );
+
+            FileManager.getAppointment(appointmentID).setSlotID(rescheduleSlotID);
+            FileManager.getAppointment(appointmentID).setStatus(AppointmentStatus.SCHEDULED);
+            FileManager.getAppointment(appointmentID).setRescheduleSlotID(-1);
+            FileWriterAppender.writeAppointments();
+
+            JOptionPane.showMessageDialog(null, "The rescheduling has been approved successfully", "Approval Successful", JOptionPane.INFORMATION_MESSAGE);
+
+            addRescheduleAppointmentToTable();
+
+            if (tableModel.getRowCount() == 0) {
+                LecturerUpcomingAppointment lecturerUpcomingAppointment = new LecturerUpcomingAppointment();
+                lecturerUpcomingAppointment.setVisible(true);
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_approve_buttonActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
@@ -176,7 +275,7 @@ public class LecturerApproveOrRejectRescheduling extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton reject_button;
+    private javax.swing.JTable rescheduleAppointmentTable;
     private javax.swing.JLabel top_text;
-    private javax.swing.JTable upcomingAppointmentTable;
     // End of variables declaration//GEN-END:variables
 }

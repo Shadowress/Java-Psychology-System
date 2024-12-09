@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import userinterface.StartUpUI;
 
@@ -50,7 +51,7 @@ public class FileManager {
             @Override
             protected void process(java.util.List<String> chunks) {
                 for (String message : chunks) {
-                    startUpUI.updateLoadingLabel(message);
+                    SwingUtilities.invokeLater(() -> startUpUI.updateLoadingLabel(message));
                 }
             }
 
@@ -69,7 +70,6 @@ public class FileManager {
         File file = new File(filePath);
 
         try {
-            // Add checking for the file location
             if (file.createNewFile()) {
                 try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
                     writer.println(fileHeader);

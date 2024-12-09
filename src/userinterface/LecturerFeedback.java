@@ -1,8 +1,11 @@
 package userinterface;
 
 import javax.swing.JOptionPane;
+import services.FeedbackManager;
 
 public class LecturerFeedback extends javax.swing.JFrame {
+    
+    private final int appointmentID;
 
     public LecturerFeedback(int appointmentID, String[] appointmentDetails) {
         initComponents();
@@ -13,6 +16,8 @@ public class LecturerFeedback extends javax.swing.JFrame {
             jLabel6.setText("Time: " + appointmentDetails[2]);
             jLabel8.setText("Status: " + appointmentDetails[3]);
         }
+        
+        this.appointmentID = appointmentID;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -146,12 +151,8 @@ public class LecturerFeedback extends javax.swing.JFrame {
             return;
         }
 
-        /* Note: for addLecturerFeedback check if there are any existing feedback of the appointment that has a student feedback in it
-            update the existing feedback if there is
-            else call FileManager.addNewFeedback(appointmentID, rating, studentComment, lecturerComment) and put rating as -1 and studentComment as null
-         */
-        // FeedbackManager.addLecturerFeedback(appointmentID, jTextArea2.getText().trim());
-        JOptionPane.showMessageDialog(null, "Thank you for your feedback!", "Feedback Submitted", JOptionPane.INFORMATION_MESSAGE);
+        FeedbackManager.addLecturerFeedback(appointmentID, jTextArea2.getText().trim());
+        JOptionPane.showMessageDialog(null, "Thank you for your feedback", "Feedback Submitted", JOptionPane.INFORMATION_MESSAGE);
 
         LecturerPastAppointment lecturerPastAppointment = new LecturerPastAppointment();
         lecturerPastAppointment.setVisible(true);

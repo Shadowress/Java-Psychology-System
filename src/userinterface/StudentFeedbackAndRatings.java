@@ -287,12 +287,8 @@ public class StudentFeedbackAndRatings extends javax.swing.JFrame {
             return;
         }
 
-        /* Note: for addStudentFeedback check if there are any existing feedback of the appointment that has a lecturer feedback in it
-                 update the existing feedback if there is
-                 else call FileManager.addNewFeedback(appointmentID, rating, studentComment, lecturerComment) and put lecturerComment as null
-         */
-        // FeedbackManager.addStudentFeedback(appointmentID, selectedRating, jTextArea2.getText().trim());
-        JOptionPane.showMessageDialog(null, "Thank you for your feedback!", "Feedback Submitted", JOptionPane.INFORMATION_MESSAGE);
+        FeedbackManager.addStudentFeedback(appointmentID, selectedRating, jTextArea2.getText().trim());
+        JOptionPane.showMessageDialog(null, "Thank you for your feedback", "Feedback Submitted", JOptionPane.INFORMATION_MESSAGE);
 
         StudentPastAppointment studentPastAppointment = new StudentPastAppointment();
         studentPastAppointment.setVisible(true);

@@ -105,8 +105,8 @@ public class FileWriterAppender {
                         String.valueOf(feedback.getFeedbackID()),
                         String.valueOf(feedback.getAppointmentID()),
                         String.valueOf(feedback.getRating()),
-                        feedback.getStudentComment().replace(",", "###COMMA###"),
-                        feedback.getLecturerComment().replace(",", "###COMMA###")
+                        feedback.getStudentComment() == null ? "" : feedback.getStudentComment().replace(",", "###COMMA###"),
+                        feedback.getLecturerComment() == null ? "" : feedback.getLecturerComment().replace(",", "###COMMA###")
                 );
                 writer.write(line);
                 writer.newLine();
@@ -185,8 +185,8 @@ public class FileWriterAppender {
                     String.valueOf(feedback.getFeedbackID()),
                     String.valueOf(feedback.getAppointmentID()),
                     String.valueOf(feedback.getRating()),
-                    feedback.getStudentComment().replace(",", "###COMMA###"),
-                    feedback.getLecturerComment().replace(",", "###COMMA###")
+                    feedback.getStudentComment() == null ? "" : feedback.getStudentComment().replace(",", "###COMMA###"),
+                    feedback.getLecturerComment() == null ? "" : feedback.getLecturerComment().replace(",", "###COMMA###")
             );
             writer.println(line);
         } catch (IOException e) {

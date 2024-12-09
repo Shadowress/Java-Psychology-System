@@ -1,5 +1,6 @@
 package userinterface;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import services.AppointmentManager;
 import services.SessionManager;
@@ -28,7 +29,7 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
         upcomingAppointmentTable.setColumnSelectionAllowed(false);
         upcomingAppointmentTable.setCellSelectionEnabled(false);
         upcomingAppointmentTable.setFocusable(false);
-        
+
         tableModel.setRowCount(0);
 
         for (String[] appointment : AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID())) {
@@ -40,7 +41,7 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
     private void initComponents() {
 
         top_text = new javax.swing.JLabel();
-        confirmation_button = new javax.swing.JButton();
+        viewReschedule = new javax.swing.JButton();
         back_button = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -52,12 +53,12 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
         top_text.setForeground(new java.awt.Color(51, 153, 255));
         top_text.setText("Upcoming Appointment ");
 
-        confirmation_button.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        confirmation_button.setForeground(new java.awt.Color(102, 102, 102));
-        confirmation_button.setText("View Reschedule Request");
-        confirmation_button.addActionListener(new java.awt.event.ActionListener() {
+        viewReschedule.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        viewReschedule.setForeground(new java.awt.Color(102, 102, 102));
+        viewReschedule.setText("View Reschedule Request");
+        viewReschedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmation_buttonActionPerformed(evt);
+                viewRescheduleActionPerformed(evt);
             }
         });
 
@@ -89,7 +90,7 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(confirmation_button)
+                    .addComponent(viewReschedule)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
@@ -111,7 +112,7 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(confirmation_button)
+                .addComponent(viewReschedule)
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
@@ -119,13 +120,16 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void confirmation_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmation_buttonActionPerformed
-        // Code to check if there are any rescheduled appointments
+    private void viewRescheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewRescheduleActionPerformed
+        if (AppointmentManager.getUserRescheduleAppointments(SessionManager.getCurrentUser().getUserID()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "There are no rescheduled appointments", "No Rescheduled Appointments", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         LecturerApproveOrRejectRescheduling lecturerApproveOrRejectRescheduling = new LecturerApproveOrRejectRescheduling();
         lecturerApproveOrRejectRescheduling.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_confirmation_buttonActionPerformed
+    }//GEN-LAST:event_viewRescheduleActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
         LecturerDashboard lecturerDashboard = new LecturerDashboard();
@@ -150,10 +154,10 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
-    private javax.swing.JButton confirmation_button;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel top_text;
     private javax.swing.JTable upcomingAppointmentTable;
+    private javax.swing.JButton viewReschedule;
     // End of variables declaration//GEN-END:variables
 }

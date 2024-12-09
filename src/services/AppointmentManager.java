@@ -18,7 +18,7 @@ public class AppointmentManager {
 
     public static void makeAppointment(StudentBookConsultation UI, int studentID, int slotID) {
         for (Appointment appointment : FileManager.getAppointments().values()) {
-            if (appointment.getStudentID() == studentID && appointment.getStatus() == AppointmentStatus.SCHEDULED) {
+            if (appointment.getStudentID() == studentID && (appointment.getStatus() == AppointmentStatus.SCHEDULED || appointment.getStatus() == AppointmentStatus.RESCHEDULE_PENDING)) {
                 JOptionPane.showMessageDialog(null, "You cannot have multiple appointments booked at the same time", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
