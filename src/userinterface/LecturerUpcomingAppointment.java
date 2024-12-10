@@ -1,5 +1,6 @@
 package userinterface;
 
+import entities.AppointmentStatus;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import services.AppointmentManager;
@@ -33,7 +34,9 @@ public class LecturerUpcomingAppointment extends javax.swing.JFrame {
         tableModel.setRowCount(0);
 
         for (String[] appointment : AppointmentManager.getUserUpcomingAppointments(SessionManager.getCurrentUser().getUserID())) {
-            tableModel.addRow(appointment);
+            if (!appointment[3].equalsIgnoreCase(AppointmentStatus.CANCELLED.toString())) {
+                tableModel.addRow(appointment);
+            }
         }
     }
 
