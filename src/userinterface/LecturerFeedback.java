@@ -11,7 +11,7 @@ public class LecturerFeedback extends javax.swing.JFrame {
         initComponents();
 
         if (appointmentDetails != null && appointmentDetails.length == 4) {
-            jLabel5.setText("Lecturer Name: " + appointmentDetails[0]);
+            jLabel5.setText("Student Name: " + appointmentDetails[0]);
             jLabel7.setText("Date: " + appointmentDetails[1]);
             jLabel6.setText("Time: " + appointmentDetails[2]);
             jLabel8.setText("Status: " + appointmentDetails[3]);
@@ -65,7 +65,7 @@ public class LecturerFeedback extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("Lecturer Name: ");
+        jLabel5.setText("Student Name: ");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
