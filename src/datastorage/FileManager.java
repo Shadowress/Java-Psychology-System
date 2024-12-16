@@ -33,7 +33,7 @@ public class FileManager {
             @Override
             @SuppressWarnings("SleepWhileInLoop")
             protected Void doInBackground() throws Exception {
-                for (StartupFileResource fileResource : StartupFileResource.values()) {
+                for (StartupFileResource fileResource : StartupFileResource.values()) {                    
                     publish("Initializing " + fileResource.toString().toLowerCase());
                     initializeFile(fileResource.getFilePath(), fileResource.getFileHeader());
                     fileResource.getLoader().run();
@@ -42,7 +42,7 @@ public class FileManager {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
-                    }
+                    }                    
                 }
 
                 return null;

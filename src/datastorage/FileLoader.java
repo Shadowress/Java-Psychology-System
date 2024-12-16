@@ -95,7 +95,7 @@ public class FileLoader {
                     int lecturerID = Integer.parseInt(slotData[1].trim());
                     LocalDate date = LocalDate.parse(slotData[2].trim());
                     LocalTime time = LocalTime.parse(slotData[3].trim());
-
+                    
                     FileManager.addSlotToCode(slotID, new Slot(slotID, lecturerID, date, time));
                 }
             }
