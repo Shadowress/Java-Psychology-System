@@ -1,0 +1,7 @@
+user_id,username,password,user_type
+1,John Doe,password123,STUDENT
+2,Jane Doe,password456,STUDENT
+3,Dr. Smith,password789,LECTURER
+4,Dr. Brown,password101,LECTURER
+5,Sam,pass,LECTURER
+6,sam,pass,LECTURER
